@@ -1,0 +1,34 @@
+# set COMPOSE_PROJECT_NAME and DATA in .env
+
+services:
+  monitoring:
+    image: ti-monitoring
+    environment:
+      - BASE_URL=https://my.example.org
+    networks:
+      - internal_proxy
+    labels:
+      - deck-chores.cloud.command=python3 cron.py
+      - deck-chores.cloud.interval=5m
+      - deck-chores.cloud.user=www-data
+      # use traefik as proxy
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-monitoring.rule=Host(`my.example.org`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-monitoring.entrypoints=https"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-monitoring.loadbalancer.server.port=8000"
+    volumes:
+      - data:/data
+    restart: unless-stopped
+
+networks:
+  # network used by traefik
+  internal_proxy:
+    name: internal_proxy
+    external: true
+
+volumes:
+  data:
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "${DATA}/data"
