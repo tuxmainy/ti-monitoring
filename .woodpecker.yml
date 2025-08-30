@@ -1,0 +1,17 @@
+when:
+  - event: [cron, manual]
+
+steps:
+  - name: tag
+    image: node
+    commands:
+      - echo -n "$(date +%Y%m%d_%H%M%S), latest" > .tags
+  - name: docker
+    image: woodpeckerci/plugin-docker-buildx:5
+    settings:
+      registry: https://source.devloop.de
+      repo: source.devloop.de/docker/ti-monitoring
+      username: 
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
