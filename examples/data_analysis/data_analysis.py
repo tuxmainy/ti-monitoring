@@ -8,21 +8,21 @@ def comma_format(x, pos):
     return str(x).replace('.', ',')
 
 # specify the file name if it differs from the name in the config file
-#file_name = 'data_2025_KW34.hdf5'
+#file_name = 'data_2025_KW35.hdf5'
 # get basic data and availability data for all cis
 all_data = []
 for index, ci in get_data_of_all_cis(file_name).iterrows():
     availability_data = get_availability_data_of_ci(file_name, ci['ci'])
     # selection of time window
-    #availability_data = availability_data[availability_data['times']>pd.Timestamp('2025-08-18T06:00:0.0').tz_localize('Europe/Berlin')]
-    #availability_data = availability_data[availability_data['times']<pd.Timestamp('2025-08-22T18:01:0.0').tz_localize('Europe/Berlin')]
+    #availability_data = availability_data[availability_data['times']>pd.Timestamp('2025-08-25T06:00:0.0').tz_localize('Europe/Berlin')]
+    #availability_data = availability_data[availability_data['times']<pd.Timestamp('2025-08-29T18:01:0.0').tz_localize('Europe/Berlin')]
     # get first and last timestamp of window
     first_timestamp = availability_data['times'].iloc[0]
     last_timestamp = availability_data['times'].iloc[-1]
     expected_number_of_data_points = int(round(pd.Timedelta(last_timestamp - first_timestamp).total_seconds())/300)
     number_of_dropped_data_points = expected_number_of_data_points - len(availability_data['values'])
     entry = {
-        "ci_name" : ci['ci'] + ', ' + ci['name'] + '\n' + ci['organization'],
+        "ci_name" : ci['ci'] + ', ' + ci['product'] + ', ' + ci['name'] + '\n' + ci['organization'],
         "available" : len(availability_data[availability_data['values']==1]),
         "unavailable" : len(availability_data[availability_data['values']==0]),
         "unknown" : number_of_dropped_data_points,
