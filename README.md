@@ -85,6 +85,27 @@ Soll die Web-App überhaupt nicht genutzt werden, sind folgende Ordner bzw. Date
 * pages
 * app.py
 
+## Docker
+Docker Image erstellen: `docker build --tag ti-monitoring .`
+
+Container starten: `docker container run ti-monitoring`
+
+[Beispiel Compose File](docker-compose.example.yml)
+
+### Environments
+Die Konfiguration erfolgt über Umgebungsvariablen. Folgende Umgebungsvariablen sind verwendbar:
+| Name | Beschreibung | Default |
+|------|--------------|---------|
+| DATA_FILE | Pfad zur Datei, in der die Monitoring-Daten (von cron.py) abgelegt werden | `/data/data.hdf5` |
+| BASE_URL | Basis URL, die in der Website für Links verwendet wird | `http://example.org` |
+| NOTIFY | Sollen Benachrichtigungen versendet werden? | `false` |
+| NOTIFY_CONF | Pfad zur Konfigurationsdatei für die Benachrichtigungen | `/data/notifications.json` |
+| SMTP_HOST | Mail Host | `example.org` |
+| SMTP_PORT | Mail Port | `587` |
+| SMTP_USER | Mail Benutzer | `example` |
+| SMTP_PASS | Mail Passwort | `secret` |
+| SMTP_FROM | Mail Absender | `foo@example.org` |
+
 ---
 **DISCLAIMER**
 
