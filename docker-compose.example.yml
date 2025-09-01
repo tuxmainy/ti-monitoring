@@ -20,6 +20,14 @@ services:
       - data:/data
     restart: unless-stopped
 
+  cron:
+    image: ghcr.io/funkyfuture/deck-chores:1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    #networks:
+    #  - backend
+    restart: unless-stopped
+
 networks:
   # network used by traefik
   internal_proxy:
